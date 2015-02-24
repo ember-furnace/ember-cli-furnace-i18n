@@ -1,9 +1,9 @@
 import Ember from 'ember';
-import defaultservice from 'ember-cli-i18n/services/i18n';
+import defaultservice from 'furnace-i18n/services/i18n';
 
 var bind = Ember.run.bind;
 
-import { read, readArray } from 'ember-cli-i18n/utils/stream';
+import { read, readArray } from 'furnace-i18n/utils/stream';
 
 function T(attributes) {
   for(var key in attributes) {
@@ -28,7 +28,11 @@ function T(attributes) {
     result = service.getLocalizedPath(locale, path, this.container, this);
     result = service.applyPluralizationRules(result, locale, path, this.container, values, this);
 
-    Ember.assert('Missing translation for key "' + path + '".', result);
+    // Dont assert, just warn. It is very annoying during development. 
+    Ember.warn('Missing translation for key "' + path + '".', result);
+    if(!result) {
+    	result='!('+path+')';
+    }
     Ember.assert('Translation for key "' + path + '" is not a string.', Ember.typeOf(result) === 'string');
 
     return service.fmt(result, readArray(values));

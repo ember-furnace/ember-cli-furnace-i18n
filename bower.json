@@ -1,5 +1,5 @@
 {
-  "name": "ember-cli-i18n",
+  "name": "ember-cli-furnace-i18n",
   "dependencies": {
     "handlebars": "~2.0.0",
     "jquery": "^1.11.1",

@@ -2,5 +2,9 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-cli-i18n'
+	name: 'furnace-i18n',
+	
+	isDevelopingAddon: function() {
+		return true;
+	}
 };

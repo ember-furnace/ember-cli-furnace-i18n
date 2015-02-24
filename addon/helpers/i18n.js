@@ -1,10 +1,10 @@
-import Stream from 'ember-cli-i18n/utils/stream';
+import Stream from 'furnace-i18n/utils/stream';
 
 export default function tHelper(params, hash, options, env) {
   var path = params.shift();
 
   var container = this.container;
-  var t = container.lookup('utils:t');
+  var t = container.lookup('i18n:t');
   var application = container.lookup('application:main');
 
   var stream = new Stream(function() {
