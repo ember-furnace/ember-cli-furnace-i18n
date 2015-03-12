@@ -1,24 +1,26 @@
 import Ember from 'ember';
-import T from 'furnace-i18n/utils/t';
-import tHelper from 'furnace-i18n/helpers/i18n';
-import Stream from 'furnace-i18n/utils/stream';
+import i18n from 'furnace-i18n';
+import I18nTranslate from 'furnace-i18n/utils/translate';
+import i18nHelper from 'furnace-i18n/helpers/i18n';
+import I18nStream from 'furnace-i18n/utils/stream';
+import Stream from 'furnace-i18n/lib/stream';
+import Service from 'furnace-i18n/services/i18n';
 
 export function initialize(container, application) {
-  Ember.HTMLBars._registerHelper('i18n', tHelper);
-
-  application.localeStream = new Stream(function() {
-    return  application.get('locale');
-  });
-
-  Ember.addObserver(application, 'locale', function() {
-    application.localeStream.notify();
-  });
-
-  application.register('i18n:t', T);
-  application.inject('route', 't', 'i18n:t');
-  application.inject('model', 't', 'i18n:t');
-  application.inject('component', 't', 'i18n:t');
-  application.inject('controller', 't', 'i18n:t');
+	Ember.HTMLBars._registerHelper('i18n', i18nHelper);	
+	
+	application.register('service:i18n', Service);
+  
+	application.register('i18n:translate', I18nTranslate);
+	application.register('i18n:stream', I18nStream);
+  
+	application.inject('route', 'i18n', 'i18n:translate');
+	application.inject('model', 'i18n', 'i18n:translate');
+	application.inject('component', 'i18n', 'i18n:translate');
+	application.inject('controller', 'i18n', 'i18n:translate');
+	application.inject('validator', 'i18n', 'i18n:translate');
+	i18n.initialize(container,application);
+	
 };
 
 export default {

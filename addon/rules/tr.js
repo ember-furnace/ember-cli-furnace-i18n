@@ -1,2 +1,2 @@
-import zh from 'ember-cli-i18n/rules/zh';
+import zh from 'furnace-i18n/rules/zh';
 export default zh;

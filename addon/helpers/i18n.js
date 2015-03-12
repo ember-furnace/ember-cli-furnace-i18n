@@ -1,29 +1,27 @@
-import Stream from 'furnace-i18n/utils/stream';
+import streamCreate from 'furnace-i18n/lib/stream';
 
-export default function tHelper(params, hash, options, env) {
-  var path = params.shift();
-
-  var container = this.container;
-  var t = container.lookup('i18n:t');
-  var application = container.lookup('application:main');
-
-  var stream = new Stream(function() {
-    return t(path, params);
-  });
-
-  // bind any arguments that are Streams
-  for (var i = 0, l = params.length; i < l; i++) {
-    var param = params[i];
-    if(param && param.isStream){
-      param.subscribe(stream.notify, stream);
-    };
-  }
-
-  application.localeStream.subscribe(stream.notify, stream);
-
-  if (path.isStream) {
-    path.subscribe(stream.notify, stream);
-  }
-
-  return stream;
+export default function i18nHelper(params, hash, options, env) {
+	var path = params.shift();
+	var container = this.container;
+	var stream = container.lookup('i18n:stream');
+	if(hash.attributes) {
+		var attributes=hash.attributes.value();
+		if(attributes && attributes.length) {
+			for(var i=0;i<attributes.length;i++) {
+				var index=i;
+				var attrStream = streamCreate(function() {
+					var attributes=hash.attributes.value();
+					return attributes[index];
+				});
+				attrStream.subscribeTo(hash.attributes);
+				params.push(attrStream);
+			}
+		}
+	}
+	var _stream=stream(path,params);
+	
+	this.on('willClearRender',function(){
+		_stream.destroy();
+	});
+	return _stream;
 }

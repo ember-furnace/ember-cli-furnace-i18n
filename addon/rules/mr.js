@@ -1,2 +1,2 @@
-import en from 'ember-cli-i18n/rules/en';
+import en from 'furnace-i18n/rules/en';
 export default en;

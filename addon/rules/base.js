@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { read } from 'ember-cli-i18n/utils/stream';
+import { read } from 'furnace-i18n/lib/stream';
 
 export default function(keys, value, result, path, countryCode, fn) {
   var type;

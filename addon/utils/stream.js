@@ -1,11 +1,24 @@
+
+
 import Ember from 'ember';
 
-/*
-`Ember.__loader` is private, but these specific modules were not exposed when the initial
-streamification of Ember's view layer happened.
+var bind = Ember.run.bind;
 
-https://github.com/emberjs/ember.js/pull/9693 is pending to expose them (hopefully in 1.10).
-*/
-export default Ember.__loader.require('ember-metal/streams/stream')['default'];
-export var readArray = Ember.__loader.require('ember-metal/streams/utils')['readArray'];
-export var read = Ember.__loader.require('ember-metal/streams/utils')['read'];
+function I18nStream(attributes) {
+	for(var key in attributes) {
+		this[key] = attributes[key];
+	}
+	this.stream = function(path, values) {
+		var service = this.container.lookup('service:i18n');
+		return service.stream( path,values);
+	};
+}
+
+I18nStream.create = function(attributes) {
+	var instance = new I18nStream(attributes);
+	var fn = bind(instance, instance.stream);
+	fn.destroy = function() {};
+	return fn;
+};
+
+export default I18nStream;

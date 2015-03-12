@@ -1,4 +1,4 @@
-import base from 'ember-cli-i18n/rules/base';
+import base from 'furnace-i18n/rules/base';
 
 export default function(value, result, path, countryCode) {
   var validKeys = ['zero', 'one', 'two', 'few', 'many', 'other'];
