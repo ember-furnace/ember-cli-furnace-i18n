@@ -1,10 +1,15 @@
 import Ember from 'ember';
 import computed from './computed';
 import Resolver from './resolver';
-
+import Translation from './translation';
+import Promise from './promise';
 export default {		
 	
 	Resolver: Resolver,
+	
+	Translation: Translation,
+	
+	TranslationPromise: Promise,
 	
 	container: null,
 	service: null,

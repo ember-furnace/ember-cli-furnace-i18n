@@ -110,7 +110,10 @@ export default Ember.Service.extend( {
 	  
 		path = read(path);
 	  
-		result = this._getLocalizedPath(path);	  
+		result = this._getLocalizedPath(path);	 
+		if(result instanceof Ember.RSVP.Promise) {
+			return result;
+		}
 		result = this._applyPluralizationRules(result, path, values);  
 	     
 		Ember.warn('Missing translation for key "' + path + '".', result);
@@ -124,9 +127,16 @@ export default Ember.Service.extend( {
 	stream : function(path, params) {
 		var service=this;  
 		var stream = createStream(function() {
-			return service.translate(path, params);
-			
+			var result = service.translate(path, params);
+			if(result instanceof Ember.RSVP.Promise) {
+				result.then(function(){
+					stream.notify();
+				} );
+			} else {
+				return result;
+			}
 		});
+		
 		stream.subscribeTo(this._localeStream);
 		
 		if (path.isStream) {

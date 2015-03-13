@@ -1,4 +1,6 @@
 import Ember from 'ember';
+import Promise from './promise';
+
 var get = Ember.get;
 export default Ember.Object.extend({
 			
@@ -20,6 +22,7 @@ export default Ember.Object.extend({
 			localeSet = this.container.lookupFactory('locale:' + locale.defaultLocale+'.'+path);
 		}
 		if(localeSet) {
+			console.log(localeSet);
 			if(localeSet.create) {
 				localeSet=localeSet.create();
 			}
@@ -38,11 +41,19 @@ export default Ember.Object.extend({
 			path='app';
 		}
 		
-		if(locale.libraries[path]===undefined) {
+		var library=locale.libraries[path]
+		
+		if(library===undefined) {
 			this._loadPath(locale,path);
+			library=locale.libraries[path]
 		}
-		if(locale.libraries[path]!==null) {
-			return get(locale.libraries[path],name);
+		if(library!==null) {
+			if(library instanceof Promise) {
+				if(library.get('content')===null) {
+					return library._promise;
+				}
+			}
+			return get(library,name);
 		}
 	}
 	
