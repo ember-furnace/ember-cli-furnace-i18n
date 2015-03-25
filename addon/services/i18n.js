@@ -6,6 +6,15 @@ import { read, readArray } from 'furnace-i18n/lib/stream';
 
 var get = Ember.get;
 
+/**
+ * @module furnace
+ * @submodule furnace-i18n
+ */
+
+/**
+ * @namespace Furnace.I18n
+ * @class Service 
+ */
 export default Ember.Service.extend( {
 
 	container: null,
@@ -18,12 +27,33 @@ export default Ember.Service.extend( {
 	
 	_rules: null,
 	
+	/**
+	 * Current selected locale
+	 * @property locale
+	 * @type String
+	 */
 	locale : null,
 	
+	/**
+	 * Stream for the current locale
+	 * @property localeStream
+	 * @type Stream
+	 * @readOnly
+	 */
 	localeStream : Ember.computed.alias('_localeStream').readOnly(),
 	
+	/**
+	 * Resolver used for resolving translation paths
+	 * @property resolver
+	 * @type Furnace.I18n.Resolver
+	 */
 	resolver : null,
 	
+	/**
+	 * Initialize the translation service
+	 * @method init
+	 * @private
+	 */
 	init: function() {
 		var application = this.container.lookup('application:main');
 		var service=this;
@@ -97,6 +127,13 @@ export default Ember.Service.extend( {
 		return result;
 	},
   
+	/**
+	 * Translate a certain translation path with optional parameters
+	 * @method translate
+	 * @param path {String|Stream} Path to translate
+	 * @param params (optional) {Array} A list of attributes for the translation
+	 * @returns {String|Ember.RSVP.Promise} Returns translation or a promise for the requested translation  
+	 */
 	translate:function(path,values) {
 		var result;
 		var	locale=this.get('_localeStream').value(); 
@@ -124,6 +161,13 @@ export default Ember.Service.extend( {
 		return this.fmt(result, readArray(values));	    
 	},
 
+	/**
+	 * Create a stream for a certain translation path with optional parameters
+	 * @method stream
+	 * @param path {String|Stream} Path to translate
+	 * @param params (optional) {Array} A list of attributes for the translation
+	 * @returns {Stream} Stream for the translation  
+	 */
 	stream : function(path, params) {
 		var service=this;  
 		var stream = createStream(function() {
@@ -153,5 +197,10 @@ export default Ember.Service.extend( {
 		return stream;
 	},
 	
+	/**
+	 * Alias for Ember.String.fmt
+	 * @method fmt
+	 * @return {String} Formatted string
+	 */
 	fmt: Ember.String.fmt
 });

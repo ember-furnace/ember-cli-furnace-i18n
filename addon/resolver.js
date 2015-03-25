@@ -1,6 +1,15 @@
 import Ember from 'ember';
 import Promise from './promise';
+/**
+ * @module furnace
+ * @submodule furnace-i18n
+ */
 
+/**
+ * Resolver for locales
+ * @class Resolver
+ * @namespace Furnace.I18n
+ */
 var get = Ember.get;
 export default Ember.Object.extend({
 			
