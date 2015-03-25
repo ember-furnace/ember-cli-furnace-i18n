@@ -22,7 +22,6 @@ export default Ember.Object.extend({
 			localeSet = this.container.lookupFactory('locale:' + locale.defaultLocale+'.'+path);
 		}
 		if(localeSet) {
-			console.log(localeSet);
 			if(localeSet.create) {
 				localeSet=localeSet.create();
 			}
