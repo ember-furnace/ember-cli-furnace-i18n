@@ -42,7 +42,7 @@ export default Ember.Object.extend({
 	},
 	
 	lookup:function(locale,path) {		
-		var _path=path.split('.');
+		var _path=typeof path==='string' ? path.split('.') : path.toString().split('.');
 		var name=_path.pop();
 		path=_path.join('.');
 		if(path==='') {
