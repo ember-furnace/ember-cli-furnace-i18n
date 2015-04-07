@@ -112,6 +112,8 @@ export default Ember.Service.extend( {
 	},
   
 	_getLocalizedPath: function(path) {
+		if(path===null)
+			return null;
 		if(typeof path === 'object') {
 			path=path.toString();
 		}

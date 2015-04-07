@@ -13,7 +13,10 @@ import streamCreate from 'furnace-i18n/lib/stream';
  */
 export default function i18nHelper(params, hash, options, env) {
 	var path = params.shift();
-	var container = this.container;
+	
+	var view = env.data.view;
+	var container = view.container || read(view._keywords.view).container;
+	
 	var stream = container.lookup('i18n:stream');
 	if(hash.attributes) {
 		var attributes=hash.attributes.value();
@@ -31,7 +34,7 @@ export default function i18nHelper(params, hash, options, env) {
 	}
 	var _stream=stream(path,params);
 	
-	this.on('willClearRender',function(){
+	view.on('willClearRender',function(){
 		_stream.destroy();
 	});
 	return _stream;
