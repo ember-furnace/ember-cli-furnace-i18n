@@ -21,12 +21,12 @@ export default function i18nHelper(params, hash, options, env) {
 	if(hash.attributes) {
 		var attributes=hash.attributes.value();
 		if(attributes && attributes.length) {
-			for(var i=0;i<attributes.length;i++) {
-				var index=i;
+			for(var i=0;i<attributes.length;i++) {				
 				var attrStream = streamCreate(function() {
 					var attributes=hash.attributes.value();
-					return attributes[index];
+					return attributes[this.index];
 				});
+				attrStream.index=i;
 				attrStream.subscribeTo(hash.attributes);
 				params.push(attrStream);
 			}

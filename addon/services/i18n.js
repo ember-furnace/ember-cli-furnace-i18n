@@ -142,13 +142,14 @@ export default Ember.Service.extend( {
 		
 		if(values.isStream) {
 			values=values.value();
-		}		
+		}
 		if (!Ember.isArray(values)) {
 			values = Array.prototype.slice.call(arguments, 1);
 		}
 	  
 		path = read(path);
-	  
+		if(!path)
+			return null;
 		result = this._getLocalizedPath(path);	 
 		if(result instanceof Ember.RSVP.Promise) {
 			return result;
