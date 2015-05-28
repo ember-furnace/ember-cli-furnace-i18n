@@ -30,8 +30,6 @@ var fn= function(key,value) {
 		value = this._i18nCache[key] || meta.i18nDefaultValue;
 	}
 	
-	console.log(key,value,meta.i18nDefaultValue);
-	
 	var _values=[];
 	if(meta.i18nValues) {
 		for(var i=0; i<meta.i18nValues;i++) {
