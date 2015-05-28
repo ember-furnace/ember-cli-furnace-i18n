@@ -21,7 +21,7 @@ var createStream=function(fn) {
 	Stream._destroy = Stream.destroy;
 	
 	Stream.destroy=function() {
-		if(this.subscriptions) {
+		if(this.subscriptions && this.subscribers) {
 			for(var i=0;i<this.subscribers.length;i++) {
 				if(this.subscriptions[i]) {
 					this.subscriptions[i].unsubscribe(this.notify,this);
