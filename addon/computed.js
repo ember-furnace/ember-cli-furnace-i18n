@@ -5,6 +5,7 @@ var fn= function(key,value) {
 	Ember.assert('You seem to have assigned a i18n computed property to a native object',typeof this.constructor.metaForProperty==='function');
 		
 	var meta=this.constructor.metaForProperty(key);
+	
 	var service=meta.i18nService();
 	if(!this['_i18n']) {
 		// Added this because of a potential memory leak, but the leak might have been caused by furnace-forms
@@ -16,13 +17,21 @@ var fn= function(key,value) {
 			}
 		})
 	
-	}	
+	}
+	
+	if(!this._i18nCache) {
+		this._i18nCache={};
+	}
+	
 	if(value) {
-		meta.i18nCache[key]=value
+		this._i18nCache[key]=value
 	}
 	else {
-		value =meta.i18nCache[key] || meta.i18nDefaultValue;
+		value = this._i18nCache[key] || meta.i18nDefaultValue;
 	}
+	
+	console.log(key,value,meta.i18nDefaultValue);
+	
 	var _values=[];
 	if(meta.i18nValues) {
 		for(var i=0; i<meta.i18nValues;i++) {
