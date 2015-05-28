@@ -7,14 +7,21 @@ var fn= function(key,value) {
 	var meta=this.constructor.metaForProperty(key);
 	var service=meta.i18nService();
 	if(!this['_i18n']) {
-		this['_i18n']=service;
-	}
+		// Added this because of a potential memory leak, but the leak might have been caused by furnace-forms
+		this.reopen({
+			_i18n: service,
+			willDestroy : function() {
+				this._super();
+				this.set('_i18n',null);
+			}
+		})
 	
+	}	
 	if(value) {
-		this['_i18n_'+key]=value
+		meta.i18nCache[key]=value
 	}
 	else {
-		value =this['_i18n_'+key] || meta.i18nDefaultValue;
+		value =meta.i18nCache[key] || meta.i18nDefaultValue;
 	}
 	var _values=[];
 	if(meta.i18nValues) {
@@ -30,6 +37,7 @@ export default function i18nComputed(ns,defaultValue,values) {
 	var cp = new Ember.computed(fn).meta({
 		i18nDefaultValue: defaultValue,
 		i18nValues : values,
+		i18nCache : {},
 		i18nService: function() {
 			return ns.service;
 		},
