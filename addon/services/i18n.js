@@ -4,7 +4,6 @@ import createStream from 'furnace-i18n/lib/stream';
 
 import { read, readArray } from 'furnace-i18n/lib/stream';
 
-var get = Ember.get;
 
 /**
  * @module furnace
@@ -62,7 +61,7 @@ export default Ember.Service.extend( {
 		});
 
 		Ember.addObserver(application, 'locale',this, function() {
-			this.set('locale', application.get('locale') || application.get('defaultLocale') )
+			this.set('locale', application.get('locale') || application.get('defaultLocale') );
 		});
 		
 		Ember.addObserver(this, 'locale',this, function() {
@@ -80,6 +79,10 @@ export default Ember.Service.extend( {
 	},
 
 	_loadLocale: function() {
+		if(!this.locale && !this.defaultLocale) {
+			Ember.warn('furnace-i18n: no locale to load! Did you set "defaultLocale" in your application environment?');
+			return;
+		}
 		var locale=this.resolver.load(this.locale,this.defaultLocale);
 		if(locale instanceof Ember.RSVP.Promise) {
 			var service=this;
@@ -87,7 +90,7 @@ export default Ember.Service.extend( {
 				service._didLoadLocale(locale);
 			});
 		} else {
-			this._didLoadLocale(locale)
+			this._didLoadLocale(locale);
 		}
 	},
 	
@@ -112,8 +115,9 @@ export default Ember.Service.extend( {
 	},
   
 	_getLocalizedPath: function(path) {
-		if(path===null)
+		if(path===null) {
 			return null;
+		}
 		if(typeof path === 'object') {
 			path=path.toString();
 		}
@@ -148,8 +152,10 @@ export default Ember.Service.extend( {
 		}
 	  
 		path = read(path);
-		if(!path)
+		if(!path) {
 			return null;
+		}
+		
 		result = this._getLocalizedPath(path);	 
 		if(result instanceof Ember.RSVP.Promise) {
 			return result;
@@ -195,7 +201,7 @@ export default Ember.Service.extend( {
 			var param = params[i];
 			if(param && param.isStream){
 				stream.subscribeTo(param);
-			};
+			}
 		}
 		return stream;
 	},
