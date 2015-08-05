@@ -32,7 +32,7 @@ var fn= function(key,value) {
 	
 	var _values=[];
 	if(meta.i18nValues) {
-		for(var i=0; i<meta.i18nValues;i++) {
+		for(var i=0; i<meta.i18nValues.length;i++) {
 			_values.push(this.get(meta.i18nValues[i]));
 		}
 	}
