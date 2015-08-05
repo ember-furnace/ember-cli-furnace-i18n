@@ -55,8 +55,8 @@ export default {
 	 * @param defaultValue {String} Default translatable value for the property
 	 * @returns Ember.ComputedProperty
 	 */
-	computed : function(defaultValue) {
-		return computed(this,defaultValue);
+	computed : function(defaultValue,values) {
+		return computed(this,defaultValue,values);
 	},
 	
 	/**
