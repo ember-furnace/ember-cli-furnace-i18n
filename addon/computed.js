@@ -7,6 +7,8 @@ var fn= function(key,value) {
 	var meta=this.constructor.metaForProperty(key);
 	
 	var service=meta.i18nService();
+	Ember.assert('I18n: service not initialized, please check your version of ember-load-initializers (bower)',service);
+	
 	if(!this['_i18n']) {
 		// Added this because of a potential memory leak, but the leak might have been caused by furnace-forms
 		this.reopen({
