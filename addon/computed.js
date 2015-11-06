@@ -41,7 +41,14 @@ var fn= function(key,value) {
 };
 
 export default function i18nComputed(ns,defaultValue,values) { 
-	var cp = new Ember.computed(fn).meta({
+	var cp = new Ember.computed({
+		get : function(key) {
+			return fn.call(this,key);
+		},
+		set : function(key,value) {
+			return fn.call(this,key,value);
+		}
+	}).meta({
 		i18nDefaultValue: defaultValue,
 		i18nValues : values,
 		i18nCache : {},

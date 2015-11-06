@@ -6,7 +6,7 @@ import I18nStream from 'furnace-i18n/utils/stream';
 import Stream from 'furnace-i18n/lib/stream';
 import Service from 'furnace-i18n/services/i18n';
 
-export function initialize(container, application) {
+export function initialize(registry, application) {
 	Ember.HTMLBars._registerHelper('i18n', i18nHelper);	
 	
 	application.register('service:i18n', Service);
@@ -19,7 +19,6 @@ export function initialize(container, application) {
 	application.inject('component', 'i18n', 'i18n:translate');
 	application.inject('controller', 'i18n', 'i18n:translate');
 	application.inject('validator', 'i18n', 'i18n:translate');
-	i18n.initialize(container,application);
 	
 };
 

@@ -64,8 +64,8 @@ export default {
 	 * @method initialize
 	 * @private
 	 */
-	initialize: function(container,application) {
-		this.container=container;
+	initialize: function(instance) {
+		this.container=instance.container;
 		this.service=container.lookup('service:i18n');
 		
 	},
