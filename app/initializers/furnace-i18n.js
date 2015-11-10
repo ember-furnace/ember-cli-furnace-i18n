@@ -1,13 +1,11 @@
 import Ember from 'ember';
 import i18n from 'furnace-i18n';
 import I18nTranslate from 'furnace-i18n/utils/translate';
-import i18nHelper from 'furnace-i18n/helpers/i18n';
 import I18nStream from 'furnace-i18n/utils/stream';
 import Stream from 'furnace-i18n/lib/stream';
 import Service from 'furnace-i18n/services/i18n';
 
 export function initialize(registry, application) {
-	Ember.HTMLBars._registerHelper('i18n', i18nHelper);	
 	
 	application.register('service:i18n', Service);
   

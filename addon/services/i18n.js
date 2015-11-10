@@ -14,7 +14,7 @@ import { read, readArray } from 'furnace-i18n/lib/stream';
  * @namespace Furnace.I18n
  * @class Service 
  */
-export default Ember.Service.extend( {
+export default Ember.Service.extend({
 
 	container: null,
 	
@@ -67,8 +67,6 @@ export default Ember.Service.extend( {
 		Ember.addObserver(this, 'locale',this, function() {
 			this._loadLocale(this.get('locale'));
 		});
-		this._localeStream.subscribe(this._loadLocale,this);
-		
 		
 		this.set('_defaultLocale', application.defaultLocale);
 		this.set('locale', application.locale ||  application.defaultLocale);
