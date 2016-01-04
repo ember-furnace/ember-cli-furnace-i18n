@@ -19,7 +19,7 @@ export default Ember.Helper.extend({
 		this.recompute();
 	}),
 	
-	compute: function(params,hash)  {
-		return this.get('i18n').translate(params.shift(),params);
+	compute: function(params,hash)  {		
+		return this.get('i18n').translate(params.shift(),hash.attributes ? hash.attributes : params);
 	}
 });
