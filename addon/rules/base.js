@@ -21,7 +21,7 @@ export default function(keys, value, result, path, countryCode, fn) {
 }
 
 function hasValidKey(keys, result) {
-  var resultKeys = Ember.keys(result);
+  var resultKeys = Object.keys(result);
 
   for(var i = 0; i < resultKeys.length; i++) {
     if (keys.indexOf(resultKeys[i]) > -1) {

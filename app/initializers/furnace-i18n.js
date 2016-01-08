@@ -5,7 +5,7 @@ import I18nStream from 'furnace-i18n/utils/stream';
 import Stream from 'furnace-i18n/lib/stream';
 import Service from 'furnace-i18n/services/i18n';
 
-export function initialize(registry, application) {
+export function initialize(application) {
 	
 	application.register('service:i18n', Service);
   

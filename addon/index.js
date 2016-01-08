@@ -66,7 +66,7 @@ export default {
 	 */
 	initialize: function(instance) {
 		this.container=instance.container;
-		this.service=this.container.lookup('service:i18n');
+		this.service=instance.lookup('service:i18n');
 		
 	},
 	

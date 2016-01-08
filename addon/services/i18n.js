@@ -4,6 +4,7 @@ import createStream from 'furnace-i18n/lib/stream';
 
 import { read, readArray } from 'furnace-i18n/lib/stream';
 
+import sprintf from 'furnace-i18n/lib/sprintf';
 
 /**
  * @module furnace
@@ -160,12 +161,14 @@ export default Ember.Service.extend({
 		}
 		result = this._applyPluralizationRules(result, path, values);  
 	     
-		Ember.warn('Missing translation for key "' + path + '".', result);
+		Ember.warn('Missing translation for key "' + path + '".', result,{id:'furnace-i18n.translation-missing'});
 		if(!result) {
 			result='(i18n:'+locale+":"+path+')';
 		}
 		Ember.assert('Translation for key "' + path + '" is not a string.', Ember.typeOf(result) === 'string');
-		return this.fmt(result, readArray(values));	    
+		let args=readArray(values);
+		args.unshift(result);
+		return this.fmt.apply(this,args );	    
 	},
 
 	/**
@@ -209,5 +212,5 @@ export default Ember.Service.extend({
 	 * @method fmt
 	 * @return {String} Formatted string
 	 */
-	fmt: Ember.String.fmt
+	fmt: sprintf
 });
