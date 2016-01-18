@@ -48,6 +48,9 @@ export default function i18nComputed(ns,defaultValue,values) {
 			return fn.call(this,key);
 		},
 		set : function(key,value) {
+			if(typeof value==='function') {
+				value=value.call(this,key);
+			}
 			return fn.call(this,key,value);
 		}
 	}).meta({
