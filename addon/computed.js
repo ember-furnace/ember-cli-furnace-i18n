@@ -25,12 +25,18 @@ var fn= function(key,value) {
 		this._i18nCache={};
 	}
 	
-	if(value) {
-		this._i18nCache[key]=value
+	if(typeof meta.i18nDefaultValue==='function') {
+		value=meta.i18nDefaultValue.call(this,key,value);
+	} else {
+		if(value) {
+			this._i18nCache[key]=value
+		}
+		else {
+			value = this._i18nCache[key] || meta.i18nDefaultValue;
+		}
 	}
-	else {
-		value = this._i18nCache[key] || meta.i18nDefaultValue;
-	}
+		
+	
 	
 	var _values=[];
 	if(meta.i18nValues) {
@@ -42,7 +48,31 @@ var fn= function(key,value) {
 	return service.translate(value,_values)
 };
 
-export default function i18nComputed(ns,defaultValue,values) { 
+/* Signatures
+ * 
+ * ns,defaultValue[,values]
+ * ns,keys,defaultValue[,values]
+ * 
+ */
+
+export default function i18nComputed() { 
+	var ns=arguments[0];
+	
+	var observes=null'
+	var values=null;
+	var defaultValue=null;
+	
+	if(arguments.length===2 || (arguments.length===3 && typeof arguments[2] === 'array' )) {
+		defaultValue=arguments[1];
+		if(arguments.length===3)
+			values=arguments[2];
+	} else {
+		observes=arguments[1];
+		defaultValue=arguments[2];
+		if(arguments.length===4)
+			values=arguments[3];
+	}
+	
 	var cp = new Ember.computed({
 		get : function(key) {
 			return fn.call(this,key);
@@ -63,7 +93,7 @@ export default function i18nComputed(ns,defaultValue,values) {
 		
 	});
 		
-	cp.property((values ?  values +',' : '')+'_i18n.locale');
+	cp.property((observes ? observes+',' :'')+(values ?  values +',' : '')+'_i18n.locale');
 	
 	return cp;	
 };
