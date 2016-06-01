@@ -58,7 +58,7 @@ var fn= function(key,value) {
 export default function i18nComputed() { 
 	var ns=arguments[0];
 	
-	var observes=null'
+	var observes=null;
 	var values=null;
 	var defaultValue=null;
 	
