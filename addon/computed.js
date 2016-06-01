@@ -62,7 +62,7 @@ export default function i18nComputed() {
 	var values=null;
 	var defaultValue=null;
 	
-	if(arguments.length===2 || (arguments.length===3 && arguments[2]!==undefined && typeof arguments[2] === 'array' )) {
+	if(arguments.length===2 || (arguments.length===3 && (arguments[2]===undefined || typeof arguments[2] === 'array' ))) {
 		defaultValue=arguments[1];
 		if(arguments.length===3)
 			values=arguments[2];
