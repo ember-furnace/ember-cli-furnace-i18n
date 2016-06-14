@@ -6,11 +6,11 @@ streamification of Ember's view layer happened.
 
 https://github.com/emberjs/ember.js/pull/9693 is pending to expose them (hopefully in 1.10).
 */
-var _Stream = Ember.__loader.require('ember-metal/streams/stream')['Stream'];
+var Stream = Ember.__loader.require('ember-metal/streams/stream')['Stream'];
 
 var createStream=function(fn) {
-	return new _Stream(fn);
-}
+	return new Stream(fn);
+};
 
 
 

@@ -17,7 +17,7 @@ var fn= function(key,value) {
 				this._super();
 				this.set('_i18n',null);
 			}
-		})
+		});
 	
 	}
 	
@@ -29,7 +29,7 @@ var fn= function(key,value) {
 		value=meta.i18nDefaultValue.call(this,key,value);
 	} else {
 		if(arguments.length>1) {
-			this._i18nCache[key]=value
+			this._i18nCache[key]=value;
 		}
 		else {
 			value = this._i18nCache[key] || meta.i18nDefaultValue;
@@ -45,7 +45,7 @@ var fn= function(key,value) {
 		}
 	}
 	// We might want to be able to use objects to load toString value from	
-	return service.translate(value,_values)
+	return service.translate(value,_values);
 };
 
 /* Signatures
@@ -63,13 +63,15 @@ export default function i18nComputed() {
 	var defaultValue=null;
 	if(arguments.length===2 || (arguments.length===3 && (arguments[2]===undefined || arguments[2] instanceof Array ))) {
 		defaultValue=arguments[1];
-		if(arguments.length===3)
+		if(arguments.length===3) {
 			values=arguments[2];
+		}
 	} else {
 		observes=arguments[1];
 		defaultValue=arguments[2];
-		if(arguments.length===4)
+		if(arguments.length===4) {
 			values=arguments[3];
+		}
 	}
 	
 	var cp = new Ember.computed({
@@ -95,4 +97,4 @@ export default function i18nComputed() {
 	cp.property((observes ? observes+',' :'')+(values ?  values +',' : '')+'_i18n.locale');
 	
 	return cp;	
-};
+}

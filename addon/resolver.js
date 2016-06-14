@@ -49,11 +49,11 @@ export default Ember.Object.extend({
 			path='app';
 		}
 		
-		var library=locale.libraries[path]
+		var library=locale.libraries[path];
 		
 		if(library===undefined) {
 			this._loadPath(locale,path);
-			library=locale.libraries[path]
+			library=locale.libraries[path];
 		}
 		if(library!==null) {
 			if(library instanceof Promise) {

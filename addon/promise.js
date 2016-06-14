@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import createStream from 'furnace-i18n/lib/stream';
 /**
  * @module furnace
  * @submodule furnace-i18n

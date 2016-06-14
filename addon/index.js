@@ -4,7 +4,6 @@
  * @module furnace
  * @submodule furnace-i18n
  */
-import Ember from 'ember';
 import computed from './computed';
 import Resolver from './resolver';
 import Translation from './translation';
