@@ -28,7 +28,7 @@ var fn= function(key,value) {
 	if(typeof meta.i18nDefaultValue==='function') {
 		value=meta.i18nDefaultValue.call(this,key,value);
 	} else {
-		if(value) {
+		if(arguments.length>1) {
 			this._i18nCache[key]=value
 		}
 		else {
