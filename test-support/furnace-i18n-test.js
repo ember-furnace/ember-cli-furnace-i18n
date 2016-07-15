@@ -2,12 +2,13 @@
 
 import Ember from 'ember';
 import config from '../config/environment';
+import {module,test} from 'qunit';
 
-if (window.QUnit) {
+
   var keys = Ember.keys;
 
   var locales, defaultLocale;
-  module('ember-cli-i18n', {
+  module('Integration | Furnace i18n', {
     setup: function() {
       var localRegExp = new RegExp(config.modulePrefix + '/locales/([^/]+)/*');
       var match, moduleName;
@@ -43,4 +44,3 @@ if (window.QUnit) {
       }
     }
   });
-}
