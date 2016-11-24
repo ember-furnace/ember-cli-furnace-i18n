@@ -26,9 +26,9 @@ export default Ember.Object.extend({
 	},
 	
 	_loadPath : function(locale,path) {
-		var localeSet= this.container.lookupFactory('locale:' + locale.locale+'.'+path);
+		var localeSet= Ember.getOwner(this)._lookupFactory('locale:' + locale.locale+'.'+path);
 		if (!localeSet) {
-			localeSet = this.container.lookupFactory('locale:' + locale.defaultLocale+'.'+path);
+			localeSet = Ember.getOwner(this)._lookupFactory('locale:' + locale.defaultLocale+'.'+path);
 		}
 		if(localeSet) {
 			if(localeSet.create) {
