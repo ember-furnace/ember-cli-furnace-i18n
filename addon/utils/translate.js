@@ -7,7 +7,7 @@ function I18nTranslate(attributes) {
 		this[key] = attributes[key];
 	}
 	this.translate = function(path, values) {
-		var service = Ember.getOwner(this).lookup('service:i18n');
+		var service = this.container.lookup('service:i18n');
 		return service.translate( path,values);
 	};
 }

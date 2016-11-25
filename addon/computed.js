@@ -2,16 +2,11 @@ import Ember from 'ember';
 
 
 var fn= function(key,value) {	
-	Ember.assert('I18n:  You seem to have assigned a i18n computed property to a native object',typeof this.constructor.metaForProperty==='function');
+	Ember.assert('You seem to have assigned a i18n computed property to a native object',typeof this.constructor.metaForProperty==='function');
 		
 	var meta=this.constructor.metaForProperty(key);
 	
-	var owner= Ember.getOwner(this);
-	if(!owner) {
-		Ember.debug('I18n: No owner for object '+this);
-		return '';
-	}
-	var service=owner.lookup('service:i18n');
+	var service=meta.i18nService();
 	Ember.assert('I18n: service not initialized, please check your version of ember-load-initializers (bower)',service);
 	
 	if(!this['_i18n']) {
@@ -62,6 +57,7 @@ var fn= function(key,value) {
 
 export default function i18nComputed() { 
 	var ns=arguments[0];
+	
 	var observes=null;
 	var values=null;
 	var defaultValue=null;
@@ -92,6 +88,9 @@ export default function i18nComputed() {
 		i18nDefaultValue: defaultValue,
 		i18nValues : values,
 		i18nCache : {},
+		i18nService: function() {
+			return ns.service;
+		},
 		
 	});
 		

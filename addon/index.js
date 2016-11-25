@@ -151,6 +151,8 @@ export default {
 	 * @private
 	 */
 	initialize: function(instance) {
+		this.container=instance.container;
+		this.service=instance.lookup('service:i18n');
 		
 	},
 	
