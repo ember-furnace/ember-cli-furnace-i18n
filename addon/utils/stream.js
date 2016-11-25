@@ -9,7 +9,7 @@ function I18nStream(attributes) {
 		this[key] = attributes[key];
 	}
 	this.stream = function(path, values) {
-		var service = this.container.lookup('service:i18n');
+		var service = Ember.getOwner(this).lookup('service:i18n');
 		return service.stream( path,values);
 	};
 }
