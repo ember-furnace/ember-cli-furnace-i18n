@@ -9,7 +9,7 @@ import {module,test} from 'qunit';
 
   var locales, defaultLocale;
   module('Integration | Furnace i18n', {
-    setup: function() {
+	beforeEach : function() {
       var localRegExp = new RegExp(config.modulePrefix + '/locales/([^/]+)/*');
       var match, moduleName;
 
@@ -24,11 +24,11 @@ import {module,test} from 'qunit';
     }
   });
 
-  test('locales all contain the same keys', function() {
+  test('locales all contain the same keys', function(assert) {
     var knownLocales = Object.keys(locales);
     // not implemented
     //if (knownLocales.length <3) {
-      expect(0);
+      assert.expect(0);
       return;
     //}
 
