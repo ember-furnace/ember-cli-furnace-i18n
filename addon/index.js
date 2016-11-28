@@ -8,6 +8,7 @@ import computed from './computed';
 import Resolver from './resolver';
 import Translation from './translation';
 import Promise from './promise';
+import I18nString from './string';
 
 var defaultDiacriticsRemovalMap = [
    {'base':'A', 'letters':/[\u0041\u24B6\uFF21\u00C0\u00C1\u00C2\u1EA6\u1EA4\u1EAA\u1EA8\u00C3\u0100\u0102\u1EB0\u1EAE\u1EB4\u1EB2\u0226\u01E0\u00C4\u01DE\u1EA2\u00C5\u01FA\u01CD\u0200\u0202\u1EA0\u1EAC\u1EB6\u1E00\u0104\u023A\u2C6F]/g},
@@ -142,7 +143,7 @@ export default {
 	 * @returns Ember.ComputedProperty
 	 */
 	computed : function(defaultValue,values) {
-		return computed(this,defaultValue,values);
+		return computed(defaultValue,values);
 	},
 	
 	/**
@@ -150,10 +151,13 @@ export default {
 	 * @method initialize
 	 * @private
 	 */
-	initialize: function(instance) {
+	initialize: function() {
 		
 	},
 	
+	text: function(str) {
+		return new I18nString(str);
+	},
 	
 	removeDiacritics: function(str) {
        var changes = defaultDiacriticsRemovalMap;

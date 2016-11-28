@@ -1,5 +1,5 @@
 import Ember from 'ember';
-
+import I18nString from './string';
 
 var fn= function(key,value) {	
 	Ember.assert('I18n:  You seem to have assigned a i18n computed property to a native object',typeof this.constructor.metaForProperty==='function');
@@ -49,7 +49,10 @@ var fn= function(key,value) {
 			_values.push(this.get(meta.i18nValues[i]));
 		}
 	}
-	// We might want to be able to use objects to load toString value from	
+	// We might want to be able to use objects to load toString value from
+	if(meta.i18nExplicit && !(value instanceof I18nString)) {
+		return value;
+	}
 	return service.translate(value,_values);
 };
 
@@ -61,20 +64,21 @@ var fn= function(key,value) {
  */
 
 export default function i18nComputed() { 
-	var ns=arguments[0];
 	var observes=null;
 	var values=null;
 	var defaultValue=null;
-	if(arguments.length===2 || (arguments.length===3 && (arguments[2]===undefined || arguments[2] instanceof Array ))) {
+	if(arguments.length<2 || (arguments.length===2 && (arguments[1]===undefined || arguments[1] instanceof Array ))) {
+		if(arguments.length>0) {
+			defaultValue=arguments[0];
+		}
+		if(arguments.length===2) {
+			values=arguments[1];
+		}
+	} else {
+		observes=arguments[0];
 		defaultValue=arguments[1];
 		if(arguments.length===3) {
 			values=arguments[2];
-		}
-	} else {
-		observes=arguments[1];
-		defaultValue=arguments[2];
-		if(arguments.length===4) {
-			values=arguments[3];
 		}
 	}
 	
@@ -96,6 +100,12 @@ export default function i18nComputed() {
 	});
 		
 	cp.property((observes ? observes+',' :'')+(values ?  values +',' : '')+'_i18n.locale');
-	
+	cp.explicit=function(set) {
+		if(set===undefined){
+			set=true;
+		}
+		this._meta.i18nExplicit=true;
+		return this;
+	};
 	return cp;	
 }
