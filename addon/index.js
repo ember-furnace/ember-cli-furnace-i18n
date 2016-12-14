@@ -120,6 +120,8 @@ export default {
 	 */
 	TranslationPromise: Promise,
 	
+	String: I18nString,
+	
 	/**
 	 * Container instance
 	 * @property container
@@ -155,8 +157,30 @@ export default {
 		
 	},
 	
-	text: function(str) {
-		return new I18nString(str);
+	text: function(str,values) {
+		return new I18nString(str,values);
+	},
+	
+	error:function(str) {
+		var object,values;
+		if(arguments.length===2) {
+			if(arguments[1] instanceof Array) {
+				values=arguments[1];
+			} else {
+				object=arguments[1];
+			}
+		} else if(arguments.length>2) {
+			values=arguments[1];
+			object=arguments[2];
+		} 
+		Ember.assert("Parameters argument should be an array",values===undefined || values instanceof Array);
+		object=object||new Ember.Error(str);
+		if(typeof object==='function') {
+			object=new object(str);
+		}
+		Ember.assert("Object argument should be an instanceof Error", object instanceof Error );
+		object.message=this.text(str,values);
+		return object;
 	},
 	
 	removeDiacritics: function(str) {

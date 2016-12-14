@@ -6,6 +6,8 @@ import { read, readArray } from 'furnace-i18n/lib/stream';
 
 import sprintf from 'furnace-i18n/lib/sprintf';
 
+import I18nString from 'furnace-i18n/string';
+
 /**
  * @module furnace
  * @submodule furnace-i18n
@@ -139,7 +141,7 @@ export default Ember.Service.extend({
 	 * @param params (optional) {Array} A list of attributes for the translation
 	 * @returns {String|Ember.RSVP.Promise} Returns translation or a promise for the requested translation  
 	 */
-	translate:function(path,values) {
+	translate:function(path,values,explicit) {
 		var result;
 		var	locale=this.get('_localeStream').value(); 
 		
@@ -154,7 +156,12 @@ export default Ember.Service.extend({
 		if(!path) {
 			return null;
 		}
-		
+		if(explicit && !(path instanceof I18nString)) {
+			return path;
+		}
+		if(path instanceof I18nString && path.values.length && !values.length) {
+			values=path.values;
+		}
 		result = this._getLocalizedPath(path);	 
 		if(result instanceof Ember.RSVP.Promise) {
 			return result;

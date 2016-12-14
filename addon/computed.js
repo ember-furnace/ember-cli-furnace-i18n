@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import I18nString from './string';
 
 var fn= function(key,value) {	
 	Ember.assert('I18n:  You seem to have assigned a i18n computed property to a native object',typeof this.constructor.metaForProperty==='function');
@@ -49,11 +48,8 @@ var fn= function(key,value) {
 			_values.push(this.get(meta.i18nValues[i]));
 		}
 	}
-	// We might want to be able to use objects to load toString value from
-	if(meta.i18nExplicit && !(value instanceof I18nString)) {
-		return value;
-	}
-	return service.translate(value,_values);
+	// We might want to be able to use objects to load toString value from	
+	return service.translate(value,_values,meta.i18nExplicit);
 };
 
 /* Signatures
