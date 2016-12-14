@@ -159,7 +159,7 @@ export default Ember.Service.extend({
 		if(explicit && !(path instanceof I18nString)) {
 			return path;
 		}
-		if(path instanceof I18nString && path.values.length && !values.length) {
+		if(path instanceof I18nString && path.values && path.values.length && !values.length) {
 			values=path.values;
 		}
 		result = this._getLocalizedPath(path);	 
