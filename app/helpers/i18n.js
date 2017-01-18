@@ -1,4 +1,3 @@
-import streamCreate from 'furnace-i18n/lib/stream';
 import Ember from 'ember';
 /**
  * @module furnace
@@ -21,10 +20,20 @@ export default Ember.Helper.extend({
 	
 	compute: function(params,hash)  {
 		var explicit=false;
+		var _params=Ember.A(),hash=Ember.assign ? Ember.assign({},hash) : hash;
 		if(hash.explicit) {
 			explicit=hash.explicit;
 			delete hash.explicit;
 		}
-		return this.get('i18n').translate(params.shift(),hash.attributes ? hash.attributes : params,explicit);
+		_params.pushObjects(params);		
+		var result = this.get('i18n')._translate(_params.shift(),hash.attributes ? hash.attributes : _params,explicit);
+		if(result instanceof Ember.RSVP.Promise) {
+			var instance=this;
+			result.then(function() {
+				instance.recompute();
+			});
+			return '⌛';
+		}
+		return result;
 	}
 });

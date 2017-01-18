@@ -8,19 +8,24 @@ https://github.com/emberjs/ember.js/pull/9693 is pending to expose them (hopeful
 */
 
 var streamPackage='ember-metal';
-
+var readArray,read;
 if(Ember.VERSION.split('.')[1]>6) {
 	streamPackage='ember-htmlbars';
-} 
+}
+if (Ember.VERSION.split('.')[1]>9) {
+	readArray=read=function(value) {
+		return value;
+	}
+} else {
+	readArray = Ember.__loader.require(streamPackage+'/streams/utils')['readArray'];
+	read = Ember.__loader.require(streamPackage+'/streams/utils')['read'];
+}
 
-var Stream = Ember.__loader.require(streamPackage+'/streams/stream')['Stream'];
 
 var createStream=function(fn) {
-	return new Stream(fn);
+	Ember.assert('We no longer work with streams');
 };
 
 
-
-export var readArray = Ember.__loader.require(streamPackage+'/streams/utils')['readArray'];
-export var read = Ember.__loader.require(streamPackage+'/streams/utils')['read'];
+export {readArray,read};
 export default createStream;

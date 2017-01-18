@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 var fn= function(key,value) {	
 	Ember.assert('I18n:  You seem to have assigned a i18n computed property to a native object',typeof this.constructor.metaForProperty==='function');
-		
 	var meta=this.constructor.metaForProperty(key);
 	
 	var owner= Ember.getOwner(this);
@@ -16,17 +15,18 @@ var fn= function(key,value) {
 	if(!this['_i18n']) {
 		// Added this because of a potential memory leak, but the leak might have been caused by furnace-forms
 		this.reopen({
-			_i18n: service,
+			_i18n: Ember.inject.service('i18n'),
 			willDestroy : function() {
 				this._super();
 				this.set('_i18n',null);
 			}
-		});
-	
+		});			
 	}
 	
 	if(!this._i18nCache) {
 		this._i18nCache={};
+		// Consume _locale property to receive updates
+		this.get('_i18n._locale');
 	}
 	
 	if(typeof meta.i18nDefaultValue==='function') {
@@ -49,7 +49,15 @@ var fn= function(key,value) {
 		}
 	}
 	// We might want to be able to use objects to load toString value from	
-	return service.translate(value,_values,meta.i18nExplicit);
+	var result = service._translate(value,_values,meta.i18nExplicit);
+	if(result instanceof Ember.RSVP.Promise) {
+		var target=this;
+		result.then(function() {
+			target.notifyPropertyChange(key);
+		});
+		return '⌛';
+	}
+	return result;
 };
 
 /* Signatures
@@ -95,7 +103,7 @@ export default function i18nComputed() {
 		
 	});
 		
-	cp.property((observes ? observes+',' :'')+(values ?  values +',' : '')+'_i18n.locale');
+	cp.property((observes ? observes+',' :'')+(values ?  values +',' : '')+'_i18n._locale');
 	cp.explicit=function(set) {
 		if(set===undefined){
 			set=true;
