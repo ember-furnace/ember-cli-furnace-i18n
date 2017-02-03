@@ -20,13 +20,18 @@ export default Ember.Helper.extend({
 	
 	compute: function(params,hash)  {
 		var explicit=false;
-		var _params=Ember.A(),hash=Ember.assign ? Ember.assign({},hash) : hash;
+		var _attributes=Ember.A();
 		if(hash.explicit) {
-			explicit=hash.explicit;
-			delete hash.explicit;
+			explicit=hash.explicit;			
 		}
-		_params.pushObjects(params);		
-		var result = this.get('i18n')._translate(_params.shift(),hash.attributes ? hash.attributes : _params,explicit);
+		
+		if(hash.attributes) {
+			_attributes.pushObjects(hash.attributes);
+		} else {
+			_attributes.pushObjects(params.slice(1));
+		}
+		
+		var result = this.get('i18n')._translate(params[0],_attributes,explicit);
 		if(result instanceof Ember.RSVP.Promise) {
 			var instance=this;
 			result.then(function() {
