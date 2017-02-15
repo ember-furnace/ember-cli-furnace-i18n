@@ -38,14 +38,6 @@ export default {
 	String: I18nString,
 	
 	/**
-	 * Container instance
-	 * @property container
-	 * @type Object
-	 * @deprecated
-	 */
-	container: null,
-	
-	/**
 	 * Service instance
 	 * @property service
 	 * @type Object

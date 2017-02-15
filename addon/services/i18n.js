@@ -17,8 +17,6 @@ import I18nString from 'furnace-i18n/string';
  */
 export default Ember.Service.extend({
 
-	container: null,
-	
 	_defaultLocale: null,
 	
 	_localeStream:null,
