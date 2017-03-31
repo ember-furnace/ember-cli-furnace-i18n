@@ -254,11 +254,11 @@ export default Ember.Service.extend({
 		return Number(number.replace(new RegExp('\\'+this.get('_locale.numeric.groupingSymbol'),'g'),'').replace(this.get('_locale.numeric.decimalSymbol'),'.'));
 	},
 	
-	numberToLocale(number) {
+	numberToLocale(number,opts) {
 		if(typeof number!=='number') {
 			number=Number(number);
 		}
-		return number.toLocaleString(this.get('_locale.key'));
+		return number.toLocaleString(this.get('_locale.key'),opts);
 	},
 	
 	time(date,timeFormat) {
