@@ -9,6 +9,10 @@ import Resolver from './resolver';
 import Translation from './translation';
 import Promise from './promise';
 import I18nString from './string';
+import AbstractAdapter from './adapters/abstract';
+import LocalAdapter from './adapters/local';
+import AjaxAdapter from './adapters/ajax';
+import {AbstractAdapterMixin,LocalAdapterMixin,AjaxAdapterMixin} from './mixins/adapters';
 
 import {defaultDiacriticsRemovalMap } from './lib/diacritics';
 /**
@@ -22,6 +26,18 @@ export default {
 	 * @type Furnace.I18n.Resolver
 	 */
 	Resolver: Resolver,
+	
+	AbstractAdapter : AbstractAdapter,
+
+	AbstractAdapterMixin : AbstractAdapterMixin,
+
+	LocalAdapter : LocalAdapter,
+
+	LocalAdapterMixin : LocalAdapterMixin,
+	
+	AjaxAdapter : AjaxAdapter,
+
+	AjaxAdapterMixin : AjaxAdapterMixin,
 	
 	/**
 	 * @property Translation

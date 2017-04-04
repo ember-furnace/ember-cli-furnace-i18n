@@ -11,6 +11,10 @@ export default Ember.Object.extend({
 		rules:'default'
 	},
 	
+	init() {
+		this._libraries={};
+	},
+	
 	_libraries: null,
 	
 	toString() {

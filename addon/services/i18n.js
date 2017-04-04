@@ -6,6 +6,8 @@ import sprintf from 'furnace-i18n/lib/sprintf';
 
 import I18nString from 'furnace-i18n/string';
 
+import {AbstractAdapterMixin} from 'furnace-i18n/mixins/adapters';
+
 /**
  * @module furnace
  * @submodule furnace-i18n
@@ -41,6 +43,8 @@ export default Ember.Service.extend({
 	 */
 	resolver : null,
 	
+	adapter : null,
+	
 	/**
 	 * Initialize the translation service
 	 * @method init
@@ -60,8 +64,17 @@ export default Ember.Service.extend({
 		
 		this.set('_defaultLocale', application.defaultLocale);
 
-		this.resolver = Ember.getOwner(this).lookup('locale:resolver');
-
+		var resolverFactory = Ember.getOwner(this)._lookupFactory('locale:resolver');
+		this.resolver=resolverFactory.create(Ember.getOwner(this).ownerInjection(),{
+			service: this
+		});
+		var adapterFactory = Ember.getOwner(this)._lookupFactory('adapter:locale');
+		this.adapter=adapterFactory.create(Ember.getOwner(this).ownerInjection(),{
+			service: this
+		});
+		
+		Ember.assert('furnace-i18n: adapter should apply AbstractAdapterMixin',AbstractAdapterMixin.detect(this.adapter));
+		
 		if(!( application.locale ||  application.defaultLocale)) {
 			Ember.warn('furnace-i18n: no locale to load! Did you set "defaultLocale" in your application environment?',null,{id:'furnace-i18n:locale-not-specified'});
 			return;
@@ -70,6 +83,21 @@ export default Ember.Service.extend({
 		this.set('locale', application.locale ||  application.defaultLocale);
 		
 		this.loadLocale(this.get('locale'));
+	},
+	
+	updateLibraries : function(libraries,locale) {
+		var service=this;
+		locale=locale || this.get('_locale');
+		if(!locale) {
+			throw new Error('furnace-i18n: can not update libraries without locale')
+		}
+		var promises=[];
+		for(var key in libraries) {
+			promises.push(this.resolver.updateLibrary(locale,key,libraries[key]));
+		}
+		return Ember.RSVP.Promise.all(promises).then(function() {
+			service._didUpdateLocale(locale);
+		});
 	},
 	
 	reloadLocale: function() {

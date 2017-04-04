@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-furnace-i18n",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Internationalization support for ember-cli apps.",
   "directories": {
     "doc": "doc",

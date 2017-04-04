@@ -12,21 +12,31 @@ import Promise from './promise';
  */
 var get = Ember.get;
 export default Ember.Object.extend({
-			
-	getLocale : function(locale) {
-		var _locale= Ember.getOwner(this).lookup('locale:' + locale);
-		_locale._libraries={};
-		return _locale;
+
+	service: null,
+	
+	getLocale(localeKey) {
+		return this.get('service.adapter').lookupLocale(localeKey);
 	},
 	
-	getLibrary : function(locale,path) {
-		return Ember.getOwner(this).lookup('locale:' + locale.get('text.key')+'.'+path) || null;
+	updateLibrary: function(locale,path,hash) {
+		var promiseOrLib=this.lookupLibrary(locale,path);
+		return new Ember.RSVP.Promise(function(resolve) {
+			if(promiseOrLib instanceof Ember.RSVP.Promise) {
+				promiseOrLib.then(function() {
+					Ember.merge(locale._libraries[path],hash);
+				}).finally(resolve);
+			} else {
+				Ember.merge(locale._libraries[path],hash);
+				resolve();
+			}
+		});
 	},
-			
-	lookupPath : function(locale,path,name) {
-		var library=locale._libraries[path];		
+	
+	lookupLibrary(locale,path) {
+		var library=locale._libraries[path];
 		if(library===undefined) {
-			var library=this.getLibrary(locale,path) || null;
+			var library=this.get('service.adapter').lookupLibrary(locale,path) || null;
 			locale._libraries[path]=library;
 			if(library instanceof Ember.RSVP.Promise) {
 				library.then(function(result) {
@@ -34,15 +44,22 @@ export default Ember.Object.extend({
 				});
 			} 			
 		}
-		if(Ember.PromiseProxyMixin.detect(library)) {			
+		if(Ember.PromiseProxyMixin.detect(library)) {
 			if(library.content!==null) {
-				return get(library,'content.'+name);
+				library = get(library,'content');
 			} else {
 				return library.get('promise');
 			}
-		} else if(library instanceof Ember.RSVP.Promise) {
+		}
+		return library;
+	},
+	
+	lookupPath : function(locale,path,name) {
+		var library=this.lookupLibrary(locale,path);
+		if(library instanceof Ember.RSVP.Promise) {
 			return library;
-		} else if(library!==null) {
+		}		
+		if(library!==null) {
 			return get(library,name);
 		}
 		return undefined;
