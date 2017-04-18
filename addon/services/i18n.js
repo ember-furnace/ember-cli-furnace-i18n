@@ -201,12 +201,14 @@ export default Ember.Service.extend({
 		if(!locale) {
 			return this._localePromise;
 		}
-		
-		if(values.isStream) {
-			values=values.value();
-		}
-		if (!Ember.isArray(values)) {
-			values = Array.prototype.slice.call(arguments, 1);
+		if(values!==undefined) {
+			if(values.isStream) {
+				values=values.value();
+			}
+			if (!Ember.isArray(values)) {
+				values = Array.prototype.slice.call(arguments, 1);
+			}
+			values=values.toArray();
 		}
 	  
 		path = read(path);
