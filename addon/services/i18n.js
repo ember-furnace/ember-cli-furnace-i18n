@@ -64,12 +64,12 @@ export default Ember.Service.extend({
 		
 		this.set('_defaultLocale', application.defaultLocale);
 
-		var resolverFactory = Ember.getOwner(this)._lookupFactory('locale:resolver');
-		this.resolver=resolverFactory.create(Ember.getOwner(this).ownerInjection(),{
+		var resolverFactory = Ember.getOwner(this).factoryFor('locale:resolver');
+		this.resolver=resolverFactory.create({
 			service: this
 		});
-		var adapterFactory = Ember.getOwner(this)._lookupFactory('adapter:locale');
-		this.adapter=adapterFactory.create(Ember.getOwner(this).ownerInjection(),{
+		var adapterFactory = Ember.getOwner(this).factoryFor('adapter:locale');
+		this.adapter=adapterFactory.create({
 			service: this
 		});
 		
@@ -138,7 +138,7 @@ export default Ember.Service.extend({
 				return this.loadLocale(this.get('_defaultLocale'));
 			}
 		} else {
-			this.set('_rules', Ember.getOwner(this)._lookupFactory('furnace-i18n@rule:'+Ember.get(locale,'text.rules')));
+			this.set('_rules', Ember.getOwner(this).factoryFor('furnace-i18n@rule:'+Ember.get(locale,'text.rules')).class);
 			if(locale!==this.get('_locale')) {
 				this.set('_locale',locale);
 			}
@@ -146,21 +146,6 @@ export default Ember.Service.extend({
 		return locale;
 	},
 	
-//	_resolveLocale: function() {
-//		var	localeName=this.get('_localeStream').value(); 
-//		var locale;
-//		if(localeName) {
-//			locale= Ember.getOwner(this)._lookupFactory('locale:' + localeName);
-//		}
-//		if (!locale) {
-//			localeName = this._defaultLocale;
-//		}
-//		locale = Ember.getOwner(this)._lookupFactory('locale:' + localeName);
-//		this.set('_locale',locale);
-//		this.set('_rules', Ember.getOwner(this)._lookupFactory('furnace-i18n@rule:'+Ember.get(_locale,'text.rules')));
-//		console.log(Ember.get(_locale,'text.rules'));
-//	},
-  
 	_getLocalizedPath: function(path) {
 		if(path===null) {
 			return null;
