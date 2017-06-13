@@ -204,7 +204,7 @@ export default Ember.Service.extend({
 			return path;
 		}
 		if(path instanceof I18nString && path.values && path.values.length && !values.length) {
-			values=path.values;
+			values=path.values.toArray();
 		}
 		result = this._getLocalizedPath(path);
 
