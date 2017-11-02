@@ -10,7 +10,7 @@ function I18nString(str,values) {
 	
 	String.call(this,this.str);
 	this.toString =  function () {
-	    return this.str;
+		return this.str;
 	};
 }
 

@@ -283,7 +283,7 @@ Date.ext.formats = {
 			return (o>0?'-':'+') + H + M;
 		},
 	Z: function(d) { return d.toString().replace(/^.*\(([^)]+)\)$/, '$1'); },
-	'%': function(d) { return '%'; }
+	'%': function() { return '%'; }
 };
 
 /**

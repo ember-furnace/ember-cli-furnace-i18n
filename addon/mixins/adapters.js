@@ -1,5 +1,5 @@
 import Ember from 'ember';
-
+import Locale from '../locale';
 var AbstractAdapterMixin = Ember.Mixin.create({
 	lookupLocale() {
 		Ember.assert('furnace-i18n: adapter method lookupLocale not implemented!');
@@ -147,7 +147,7 @@ var AjaxAdapterMixin = Ember.Mixin.create(AbstractAdapterMixin,{
 			resolve();
 		}).catch(function(e) {
 			reject(e);
-		}).finally(function(test) {
+		}).finally(function() {
 			adapter._queues.removeObject(queue);
 		});
 	},

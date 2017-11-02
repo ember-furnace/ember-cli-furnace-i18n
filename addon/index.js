@@ -4,6 +4,7 @@
  * @module furnace
  * @submodule furnace-i18n
  */
+import Ember from 'ember';
 import computed from './computed';
 import Resolver from './resolver';
 import Translation from './translation';
@@ -107,10 +108,10 @@ export default {
 	},
 	
 	removeDiacritics: function(str) {
-       var changes = defaultDiacriticsRemovalMap;
-       for(var i=0; i<changes.length; i++) {
-           str = str.replace(changes[i].letters, changes[i].base);
-       }
-       return str;
-   }
+		var changes = defaultDiacriticsRemovalMap;
+		for(var i=0; i<changes.length; i++) {
+			str = str.replace(changes[i].letters, changes[i].base);
+		}
+		return str;
+	}
 };

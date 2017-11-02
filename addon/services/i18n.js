@@ -52,7 +52,6 @@ export default Ember.Service.extend({
 	 */
 	init: function() {
 		var application = Ember.getOwner(this).lookup('application:main');
-		var service=this;
 		
 		Ember.addObserver(application, 'locale',this, function() {
 			this.set('locale', application.get('locale') || application.get('defaultLocale') );
@@ -64,14 +63,14 @@ export default Ember.Service.extend({
 		
 		this.set('_defaultLocale', application.defaultLocale);
 
+		var inject=Ember.getOwner(this).ownerInjection();
+		inject.service=this;
+		
 		var resolverFactory = Ember.getOwner(this).factoryFor('locale:resolver');
-		this.resolver=resolverFactory.create({
-			service: this
-		});
+		this.resolver=resolverFactory.create(inject);
+
 		var adapterFactory = Ember.getOwner(this).factoryFor('adapter:locale');
-		this.adapter=adapterFactory.create({
-			service: this
-		});
+		this.adapter=adapterFactory.create(inject);
 		
 		Ember.assert('furnace-i18n: adapter should apply AbstractAdapterMixin',AbstractAdapterMixin.detect(this.adapter));
 		
@@ -155,7 +154,7 @@ export default Ember.Service.extend({
 		}
 		return this.resolver.lookup(this.get('_locale'), path);
 	},
-  
+
 	_applyPluralizationRules: function(result, path, values) {
 		if (Ember.typeOf(result) === 'object') {
 			var ruleResults = this._rules(values[0], result, path, this.get('_locale.key'));
@@ -171,7 +170,7 @@ export default Ember.Service.extend({
 		Ember.assert('furnace-i18n: got a promise as translation result. Make sure the library is loaded before requesting it.',!(result instanceof Ember.RSVP.Promise),{id:'furnace-i18n:service-translate-promise'});
 		return result;
 	},
-  
+
 	/**
 	 * Translate a certain translation path with optional parameters
 	 * @method _translate
@@ -195,7 +194,7 @@ export default Ember.Service.extend({
 			}
 			values=values.toArray();
 		}
-	  
+
 		path = read(path);
 		if(!path) {
 			return null;
@@ -212,15 +211,15 @@ export default Ember.Service.extend({
 			return result;
 		}
 		result = this._applyPluralizationRules(result, path, values);  
-	     
+	
 		Ember.warn('Missing translation for key "' + path + '".', result,{id:'furnace-i18n.translation-missing'});
 		if(!result) {
 			result='(i18n:'+locale.get('text.key')+":"+path+')';
 		}
 		Ember.assert('Translation for key "' + path + '" is not a string.', Ember.typeOf(result) === 'string');
-		let args=readArray(values);
+		let args=readArray(values || []);
 		args.unshift(result);
-		return this.fmt.apply(this,args );	    
+		return this.fmt.apply(this,args );
 	},
 
 	/**
@@ -276,17 +275,17 @@ export default Ember.Service.extend({
 		return number.toLocaleString(this.get('_locale.key'),opts);
 	},
 	
-	time(date,timeFormat) {
+	time(){},/* TODO: date,timeFormat) {
 		
-	},
+	}, */
 	
-	date(date, dateFormat) {
+	date(){},/* TODO: date, dateFormat) {
 		
-	},
+	}, */
 	
-	dateTime(date,dateFormat,timeFormat) {
+	dateTime(){},/* TODO: date,dateFormat,timeFormat) {
 		
-	},
+	}, */
 	
 	/**
 	 * Alias for Ember.String.fmt

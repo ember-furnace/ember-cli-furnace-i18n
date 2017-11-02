@@ -22,7 +22,7 @@ if (Ember.VERSION.split('.')[1]>9) {
 }
 
 
-var createStream=function(fn) {
+var createStream=function() {
 	Ember.assert('We no longer work with streams');
 };
 

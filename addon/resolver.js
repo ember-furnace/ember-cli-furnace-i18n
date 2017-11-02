@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Promise from './promise';
 /**
  * @module furnace
  * @submodule furnace-i18n
@@ -36,13 +35,13 @@ export default Ember.Object.extend({
 	lookupLibrary(locale,path) {
 		var library=locale._libraries[path];
 		if(library===undefined) {
-			var library=this.get('service.adapter').lookupLibrary(locale,path) || null;
+			library=this.get('service.adapter').lookupLibrary(locale,path) || null;
 			locale._libraries[path]=library;
 			if(library instanceof Ember.RSVP.Promise) {
 				library.then(function(result) {
 					locale._libraries[path]=result;
 				});
-			} 			
+			}
 		}
 		if(Ember.PromiseProxyMixin.detect(library)) {
 			if(library.content!==null) {
@@ -74,7 +73,7 @@ export default Ember.Object.extend({
 		path=_path.join('.');
 		if(path==='') {
 			path='app';
-		}						
+		}
 		return this.lookupPath(locale,path,name);
 	}
 	

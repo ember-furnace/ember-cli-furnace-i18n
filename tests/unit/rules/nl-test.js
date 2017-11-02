@@ -9,9 +9,9 @@ var result = {
 };
 
 var path = 'result';
-var countryCode = 'en';
+var countryCode = 'nl';
 
-module('Unit | CLDR Rules | English ('+countryCode+')');
+module('Unit | CLDR Rules | Dutch ('+countryCode+')');
 
 test('one', function(assert) {
 	cldrTest(assert, 1, 'one', rules, result, path, countryCode);
