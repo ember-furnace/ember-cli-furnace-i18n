@@ -192,7 +192,7 @@ export default Ember.Service.extend({
 			if (!Ember.isArray(values)) {
 				values = Array.prototype.slice.call(arguments, 1);
 			}
-			values=values.toArray();
+			values=values.slice();
 		}
 
 		path = read(path);
@@ -203,7 +203,7 @@ export default Ember.Service.extend({
 			return path;
 		}
 		if(path instanceof I18nString && path.values && path.values.length && !values.length) {
-			values=path.values.toArray();
+			values=path.values.slice();
 		}
 		result = this._getLocalizedPath(path);
 
