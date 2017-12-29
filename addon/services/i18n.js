@@ -8,6 +8,7 @@ import I18nString from 'furnace-i18n/string';
 
 import {AbstractAdapterMixin} from 'furnace-i18n/mixins/adapters';
 
+import {numberFromLocale, numberToLocale} from 'furnace-i18n/utils/numbers';
 /**
  * @module furnace
  * @submodule furnace-i18n
@@ -265,14 +266,11 @@ export default Ember.Service.extend({
 	
 	
 	numberFromLocale(number) {
-		return Number(number.replace(new RegExp('\\'+this.get('_locale.numeric.groupingSymbol'),'g'),'').replace(this.get('_locale.numeric.decimalSymbol'),'.'));
+		return numberFromLocale(number,this.get('_locale.numeric.decimalSymbol'),this.get('_locale.numeric.groupingSymbol'));
 	},
 	
 	numberToLocale(number,opts) {
-		if(typeof number!=='number') {
-			number=Number(number);
-		}
-		return number.toLocaleString(this.get('_locale.key'),opts);
+		return numberToLocale(number,opts,this.get('_locale.key'));
 	},
 	
 	time(){},/* TODO: date,timeFormat) {
