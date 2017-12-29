@@ -54,6 +54,10 @@ export default Ember.Helper.extend({
 			return '⌛';
 		}
 		
+		if(!result) {
+			return result;
+		}
+		
 		if(!htmlSafe) {
 			result = result.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 		}
