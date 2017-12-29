@@ -10,5 +10,7 @@ export default I18n.Translation.extend({
 	dependentPerson: {
 		one: 'There is %1$s dependent person here',
 		other: 'There are %1$s dependent people here'
-	}
+	},
+	
+	nl2br: "Text\nShould\nBreak<BR>%1$s"
 });

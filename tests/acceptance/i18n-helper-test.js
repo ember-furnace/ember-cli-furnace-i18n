@@ -68,3 +68,24 @@ test('changing application locale', function(assert) {
 		assert.equal(spanTwo.text(), 'nl_You are 35 years old');
 	});
 });
+
+test('nl2br and html safety', function(assert) {
+	visit('/');
+
+	andThen(function() {
+		var span = find('span.five');
+		assert.equal(span.text(), 'TextShouldBreak<BR><div></div>');
+		
+		var brs = find('span.five br');
+		assert.equal(brs.length,2, '2 breaks');
+		
+		span = find('span.six');
+		assert.equal(span.text(), 'TextShouldBreak');
+		
+		brs = find('span.six br');
+		assert.equal(brs.length,3, '3 breaks');
+		
+		var divs = find('span.six div');
+		assert.equal(divs.length,1, '1 div');
+	});
+});

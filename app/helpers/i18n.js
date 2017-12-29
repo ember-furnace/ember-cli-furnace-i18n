@@ -11,6 +11,7 @@ import Ember from 'ember';
  * @param {Hash} options
  * @return {String} HTML string  
  */
+
 export default Ember.Helper.extend({
 	i18n : Ember.inject.service(),
 	
@@ -19,10 +20,23 @@ export default Ember.Helper.extend({
 	}),
 	
 	compute: function(params,hash)  {
+		
 		var explicit=false;
+		var nl2br=true;
+		var htmlSafe=false;
+		
 		var _attributes=Ember.A();
+		
 		if(hash.explicit) {
-			explicit=hash.explicit;			
+			explicit=hash.explicit;
+		}
+		
+		if(hash.nl2br) {
+			nl2br=hash.nl2brl
+		}
+		
+		if(hash.htmlSafe) {
+			htmlSafe=hash.htmlSafe
 		}
 		
 		if(hash.attributes) {
@@ -39,6 +53,15 @@ export default Ember.Helper.extend({
 			});
 			return '⌛';
 		}
-		return result;
+		
+		if(!htmlSafe) {
+			result = result.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		}
+		
+		if(nl2br) {
+			result = result.replace(/\n/g, '<br>');
+		}
+		
+		return Ember.String.htmlSafe(result);
 	}
 });
