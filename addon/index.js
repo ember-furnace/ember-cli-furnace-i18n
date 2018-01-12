@@ -72,15 +72,6 @@ export default {
 		return computed(defaultValue,values);
 	},
 	
-	/**
-	 * Initialize i18n
-	 * @method initialize
-	 * @private
-	 */
-	initialize: function() {
-		
-	},
-	
 	text: function(str,values) {
 		return new I18nString(str,values);
 	},
