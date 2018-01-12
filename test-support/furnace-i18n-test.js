@@ -1,5 +1,5 @@
 /* globals requirejs, require */
-
+/* eslint-disable */
 import Ember from 'ember';
 import config from '../config/environment';
 import {module,test} from 'qunit';
@@ -44,3 +44,4 @@ import {module,test} from 'qunit';
       }
     }
   });
+/* eslint-enable */
