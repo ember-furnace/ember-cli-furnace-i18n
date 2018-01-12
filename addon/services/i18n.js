@@ -1,7 +1,5 @@
 import Ember from 'ember';
 
-import { read, readArray } from 'furnace-i18n/lib/stream';
-
 import sprintf from 'furnace-i18n/lib/sprintf';
 
 import I18nString from 'furnace-i18n/string';
@@ -196,7 +194,6 @@ export default Ember.Service.extend({
 			values=values.slice();
 		}
 
-		path = read(path);
 		if(!path) {
 			return null;
 		}
@@ -218,52 +215,10 @@ export default Ember.Service.extend({
 			result='(i18n:'+locale.get('text.key')+":"+path+')';
 		}
 		Ember.assert('Translation for key "' + path + '" is not a string.', Ember.typeOf(result) === 'string');
-		let args=readArray(values || []);
+		let args=(values || []);
 		args.unshift(result);
 		return this.fmt.apply(this,args );
 	},
-
-	/**
-	 * Create a stream for a certain translation path with optional parameters
-	 * @method stream
-	 * @param path {String|Stream} Path to translate
-	 * @param values (optional) {Array} A list of attributes for the translation
-	 * @returns {Stream} Stream for the translation  
-	 */
-//	stream : function(path, values, explicit) {
-//		var service=this;  
-//		var stream = createStream(function() {
-//			var result = service._translate(path, values, explicit);
-//			if(!this.label) {
-//				this.label=path;
-//			} else {
-//				console.log(this.label);
-//			}
-//			if(result instanceof Ember.RSVP.Promise) {
-//				result.then(function(){
-//					stream.notify();
-//				} );
-//				return '⌛';
-//			} else {
-//				return result;
-//			}
-//		});
-//		stream.addDependency(this._localeStream);
-//		
-//		if (path.isStream) {
-//			stream.addDependency(path);
-//		}
-//		
-//		// bind any arguments that are Streams
-//		for (var i = 0, l = values.length; i < l; i++) {
-//			var value = values[i];
-//			if(value && value.isStream){
-//				stream.addDependency(value);
-//			}
-//		}
-//		return stream;
-//	},
-	
 	
 	numberFromLocale(number) {
 		return numberFromLocale(number,this.get('_locale.numeric.decimalSymbol'),this.get('_locale.numeric.groupingSymbol'));

@@ -1,11 +1,7 @@
 import Ember from 'ember';
-import { read } from 'furnace-i18n/lib/stream';
 
 export default function(keys, value, result, path, countryCode, fn) {
   var type;
-
-  // Handle results that come in as a Stream
-  value = read(value);
 
   if (hasValidKey(keys, result)) {
     if(Ember.typeOf(value) === 'number') {
