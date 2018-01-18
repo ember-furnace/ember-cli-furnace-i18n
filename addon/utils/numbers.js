@@ -18,7 +18,7 @@ export function numberFromLocale(number,decimalSymbol,groupingSymbol) {
 		// If we don't have an occurance of the decimal symbol, assume our grouping symbol
 		// is switched when it does not appear to be grouping
 		let sets=number.split(mixupSymbol);
-		if(sets.length<3 && (sets.length===1 || sets[1].length!==3)) {
+		if(sets.length<3 && (sets.length===1 || sets[1].length!==3 || sets[0]==='0')) {
 			if(groupingSymbol===mixupSymbol) {
 				filterMatches='\\'+decimalSymbol;
 			} else {

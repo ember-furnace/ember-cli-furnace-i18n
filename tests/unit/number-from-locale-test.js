@@ -60,6 +60,8 @@ function testDGMixup(assert,d,g,mixupChar) {
 	}
 	testInput(assert,d,g,`0${mixupChar}1`,0.1,'Fix grouping/decimal mixup');
 	testInput(assert,d,g,`0${mixupChar}01`,0.01,'Fix grouping/decimal mixup');
+	testInput(assert,d,g,`0${mixupChar}001`,0.001,'Fix grouping/decimal mixup');
+	testInput(assert,d,g,`0${mixupChar}0001`,0.0001,'Fix grouping/decimal mixup');
 	testInput(assert,d,g,`1${mixupChar}01`,1.01,'Fix grouping/decimal mixup');
 	testInput(assert,d,g,`1${mixupChar}0001`,1.0001,'Fix grouping/decimal mixup');
 	testInput(assert,d,g,`1${mixupChar}000`,1000,'Do not fix grouping/decimal mixup (proper grouping)');
