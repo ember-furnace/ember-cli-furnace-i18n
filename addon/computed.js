@@ -9,8 +9,6 @@ var fn= function(key,value) {
 		Ember.debug('I18n: No owner for object '+this);
 		return '';
 	}
-	var service=owner.lookup('service:i18n');
-	Ember.assert('I18n: service not initialized, please check your version of ember-load-initializers (bower)',service);
 	
 	if(!this['_i18n']) {
 		// Added this because of a potential memory leak, but the leak might have been caused by furnace-forms
@@ -20,8 +18,11 @@ var fn= function(key,value) {
 				this._super();
 				this.set('_i18n',null);
 			}
-		});			
+		});
 	}
+	
+	var service=this.get('_i18n');
+	Ember.assert('I18n: service not initialized, please check your version of ember-load-initializers (bower)',service);
 	
 	if(!this._i18nCache) {
 		this._i18nCache={};
@@ -68,21 +69,25 @@ var fn= function(key,value) {
  */
 
 export default function i18nComputed() { 
-	var observes=null;
+	var observes=[];
 	var values=null;
 	var defaultValue=null;
 	if(arguments.length<2 || (arguments.length===2 && (arguments[1]===undefined || arguments[1] instanceof Array ))) {
 		if(arguments.length>0) {
 			defaultValue=arguments[0];
 		}
-		if(arguments.length===2) {
+		if(arguments.length===2 && arguments[1] instanceof Array) {
 			values=arguments[1];
+			observes=observes.concat(values);
 		}
 	} else {
-		observes=arguments[0];
+		if(arguments[0]) {
+			observes.push(arguments[0]);
+		}
 		defaultValue=arguments[1];
 		if(arguments.length===3) {
 			values=arguments[2];
+			observes=observes.concat(values);
 		}
 	}
 	
@@ -102,8 +107,9 @@ export default function i18nComputed() {
 		i18nCache : {},
 		
 	});
-		
-	cp.property((observes ? observes+',' :'')+(values ?  values +',' : '')+'_i18n._locale');
+	observes.push('_i18n._locale');
+	console.log(observes);
+	cp.property.apply(cp,observes);
 	cp.explicit=function(set) {
 		if(set===undefined){
 			set=true;
