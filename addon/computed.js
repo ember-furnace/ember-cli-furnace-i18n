@@ -104,11 +104,10 @@ export default function i18nComputed() {
 	}).meta({
 		i18nDefaultValue: defaultValue,
 		i18nValues : values,
-		i18nCache : {},
-		
+		i18nCache : {}
 	});
+	
 	observes.push('_i18n._locale');
-	console.log(observes);
 	cp.property.apply(cp,observes);
 	cp.explicit=function(set) {
 		if(set===undefined){
